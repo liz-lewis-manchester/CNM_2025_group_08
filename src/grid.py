@@ -25,4 +25,11 @@ def cfl_number(U,dx,dt)
 
 if dx<=0 or dt<=0:
     raise ValueError('dx and dt must be positive')
-    
+
+return U*dt/dx 
+
+def is_cfl_stable(U,dx,dt):
+
+#This checks the cfl stability condition
+
+return cfl_number(U,dx,dt)<=1 
