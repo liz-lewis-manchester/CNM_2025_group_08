@@ -24,4 +24,5 @@ def test_invalid_grid_parameters():
     with pytest.raises(ValueError):
         create_grid(L=-1,dx=0.1,T=10,dt=1) 
 
-#This file is used to test the boundary conditions set within the
+#This file is used to test the boundary conditions set within the src file
+#Cfl number is (U*Δt/Δx) and for stability has to be less than or equal to 1
