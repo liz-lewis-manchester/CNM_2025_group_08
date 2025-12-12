@@ -1,5 +1,5 @@
 import numpy as np
-import panda as dp
+import pandas as pd
 
 csv_file = input("csv file")
 L = input("length of river domain (m): ")
@@ -11,10 +11,14 @@ U = input("velocity (ms^-1): ")
 
 # change value to correct type
 try:
-    L = float(L) and dx = float(dx) and T = float(dx) and dt = float(dt) and U = float(U)
+    L = float(L)
+    dx = float(dx)
+    T = float(T)
+    dt = float(dt)
+    U = float(U)
 except ValueError:
-    print('wrong data type")
-    sys.exit()
+    raise SystemExit("type wrong")
+    
 
 initial_concentration = pd.read_csv('csv_file')
 # Distance (m) (not finish)
@@ -36,8 +40,9 @@ def create_grid(L, dx, T, dt):
     x = np.linspace(0, L, nx)
     t = np.linspace(0, T, nt)
 
-    return x, t             # ----- the output value from part1 -----
+    return x, t            
 
+x, t = create_grid(L, dx, T, dt)  # use function to generate list x and t
 
 def cfl_number(U, dx, dt):
     # this computes cfl number 
