@@ -27,7 +27,7 @@ def create_grid(L, dx, T, dt):
     x = np.linspace(0, L, nx)
     t = np.linspace(0, T, nt)
 
-    return x, t
+    return x, t             # ----- the output value from part1 -----
 
 
 def cfl_number(U, dx, dt):
@@ -35,17 +35,16 @@ def cfl_number(U, dx, dt):
     if dx <= 0 or dt <= 0:
         raise ValueError('dx and dt must be positive')
 
-    return U * dt / dx
+    return U * dt / dx      # ----- the output value from part1 -----
 
 
 def is_cfl_stable(U, dx, dt):
     # This checks the CFL stability condition
-    return cfl_number(U, dx, dt) <= 1
+    return cfl_number(U, dx, dt) <= 1           ## maybe can delete this, because secound part has test
 
 
 --------------------- #SECOUND PART ------------------------
 
-import numpy as np
 
 def advect(theta_init, U, dx, dt, num_time_steps): 
     # Solves the advection equation using the first-order upwind scheme.
