@@ -43,6 +43,7 @@ def test_steady_advection_case():
 from data_handler import read_boundary_conditions, interpolate_conditions
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+import pandas as pd
 import os
 
 def read_boundary_conditions(intial_conditions.csv):
