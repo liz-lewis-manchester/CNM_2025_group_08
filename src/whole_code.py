@@ -20,9 +20,9 @@ except ValueError:
     raise SystemExit("type wrong")
     
 
-initial_concentration = pd.read_csv('csv_file')
-# Distance (m) (not finish)
-# Concentration (�g/m_ ) (not finish)
+df = pd.read_csv(csv_file)
+theta_init = df.iloc[:, 1]           # defult the second column is concentration !!! may be a bug will here, 
+                                     # if the csv file secound column is not concentration data !!!
 
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
@@ -38,11 +38,11 @@ def create_grid(L, dx, T, dt):
     nt = int(T/dt) + 1
 
     x = np.linspace(0, L, nx)
-    t = np.linspace(0, T, nt)
+    num_time_steps = np.linspace(0, T, nt)
 
-    return x, t            
+    return x, num_time_steps            
 
-x, t = create_grid(L, dx, T, dt)  # use function to generate list x and t
+x, num_time_steps = create_grid(L, dx, T, dt)  # use function to generate list x and t
 
 def cfl_number(U, dx, dt):
     # this computes cfl number 
@@ -57,7 +57,7 @@ def is_cfl_stable(U, dx, dt):
     return cfl_number(U, dx, dt) <= 1           ## maybe can delete this, because secound part has test
 
 
---------------------- #SECOUND PART ------------------------
+# ---------------------SECOUND PART ------------------------
 
 
 def advect(theta_init, U, dx, dt, num_time_steps): 
@@ -73,10 +73,10 @@ def advect(theta_init, U, dx, dt, num_time_steps):
     theta_current = theta_init.copy()
 
     # Initialise a 2D array to store the profile at every time step.
-    theta_all = np.zeros((num_time_steps +1, num_points))
+    theta_all = np.zeros((len(num_time_steps), num_points))
     theta_all[0, :] = theta_init
 
-    for n in range(num_time_steps):
+    for n in num_time_steps:
         # Calculate the spatial difference (Upwind: theta[i] - theta[i-1]).
         d_theta = -CFL * (theta_current[1:] - theta_current[:-1])
 
