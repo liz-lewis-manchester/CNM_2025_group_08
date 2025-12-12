@@ -76,7 +76,7 @@ def advect(theta_init, U, dx, dt, num_time_steps):
     theta_all = np.zeros((len(num_time_steps), num_points))
     theta_all[0, :] = theta_init
 
-    for n in num_time_steps:
+    for n in range(len(num_time_steps) - 1):  
         # Calculate the spatial difference (Upwind: theta[i] - theta[i-1]).
         d_theta = -CFL * (theta_current[1:] - theta_current[:-1])
 
@@ -85,7 +85,7 @@ def advect(theta_init, U, dx, dt, num_time_steps):
         theta_next[1:] = theta_current[1:] + d_theta
 
         # Boundary condition: Set LHS boundary to 0.
-        theta_next[0] = 0.0
+        theta_next[0] = theta_init[0]
 
         # Progress to next step.
         theta_current = theta_next
