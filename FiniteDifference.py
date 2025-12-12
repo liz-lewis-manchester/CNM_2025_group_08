@@ -2,7 +2,7 @@ import numpy as np
 
 def advect(theta_init, U, dx, dt, num_time_steps):
     CFL = U * dt / dx
-
+#test?
     if CFL > 1.0:
       print(f"*** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL={CFL:.2f}). Solution is unstable. ***")
 
