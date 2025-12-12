@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-def read_boundary_conditions(intial_conditions.csv):
+def read_boundary_conditions(file_path):
     """
     Reads the initial boundary condition data from a CSV file.
 
