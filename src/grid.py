@@ -1,4 +1,15 @@
 import numpy as np
+import panda as dp
+
+csv_file = input("csv file")
+L = input("length of river domain (m): ")
+dx = input("change in space (m): ")
+T = input("simulation time (s): ")
+dt = input("change in time (s): ")
+
+initial_concentration = pd.read_csv('csv_file')
+# Distance (m) (not finish)
+# Concentration (�g/m_ ) (not finish)
 
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
@@ -10,7 +21,7 @@ def create_grid(L, dx, T, dt):
     if L <= 0 or dx <= 0 or dt <= 0 or T < 0:
         raise ValueError('Invalid grid parameters')
 
-    nx = int(L/dx) + 1
+    nx = int(L/dx) + 1  
     nt = int(T/dt) + 1
 
     x = np.linspace(0, L, nx)
