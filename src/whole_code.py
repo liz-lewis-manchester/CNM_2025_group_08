@@ -6,6 +6,15 @@ L = input("length of river domain (m): ")
 dx = input("change in space (m): ")
 T = input("simulation time (s): ")
 dt = input("change in time (s): ")
+U = input("velocity (ms^-1): ")
+
+
+# change value to correct type
+try:
+    L = float(L) and dx = float(dx) and T = float(dx) and dt = float(dt) and U = float(U)
+except ValueError:
+    print('wrong data type")
+    sys.exit()
 
 initial_concentration = pd.read_csv('csv_file')
 # Distance (m) (not finish)
@@ -35,7 +44,7 @@ def cfl_number(U, dx, dt):
     if dx <= 0 or dt <= 0:
         raise ValueError('dx and dt must be positive')
 
-    return U * dt / dx      # ----- the output value from part1 -----
+    return U * dt / dx      ## maybe can delete this, because secound part has test
 
 
 def is_cfl_stable(U, dx, dt):
