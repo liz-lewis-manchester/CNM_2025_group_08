@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+import os
+
 
 csv_file = input("csv file")
 L = input("length of river domain (m): ")
@@ -19,10 +23,70 @@ try:
 except ValueError:
     raise SystemExit("type wrong")
     
+    
+#----------THIRD-----------
 
-df = pd.read_csv(csv_file, encoding="latin1")
-theta_init = df.iloc[:, 1]           # defult the second column is concentration !!! may be a bug will here, 
-                                     # if the csv file secound column is not concentration data !!!
+
+def read_boundary_conditions(csv_file):
+    """
+    Reads the initial boundary condition data from a CSV file.
+
+    Args:
+        file_path (str): The path to the CSV file.
+
+    Returns:
+        tuple: A tuple containing two numpy arrays:
+               - distances (x coordinates)
+               - concentrations (pollutant levels)
+    """
+    if not os.path.exists(csv_file):
+        raise FileNotFoundError(f"The file {csv_file} does not exist.")
+
+    try:
+        # Load data using pandas
+        # Assuming the CSV has headers like 'Distance (m)' and 'Concentration (µg/m³)'
+        # We use index_col=False to ensure we just get the columns as they are
+        df = pd.read_csv(csv_file, encoding="latin1")
+        
+        # Extract columns. We assume the first column is distance and second is concentration.
+        # You might need to adjust column names based on the exact CSV format if headers differ.
+        distances = df.iloc[:, 0].values
+        concentrations = df.iloc[:, 1].values
+        
+        return distances, concentrations
+
+    except Exception as e:
+        raise RuntimeError(f"An error occurred while reading the file: {e}")
+
+def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
+    """
+    Interpolates the concentration data to a finer grid.
+
+    Args:
+        distances (np.array): Original distance points.
+        concentrations (np.array): Original concentration values.
+        num_points (int): The number of points desired in the interpolated grid.
+        kind (str): The type of interpolation ('linear', 'cubic', etc.).
+
+    Returns:
+        tuple: A tuple containing:
+               - new_distances (the finer grid)
+               - new_concentrations (interpolated values)
+    """
+    # Create an interpolation function based on the input data
+    # fill_value="extrapolate" allows estimation outside the original range if needed,
+    # though usually we stay within the bounds.
+    interpolator = interp1d(distances, concentrations, kind=kind, fill_value="extrapolate")
+    
+    # Generate a new, finer grid of distances
+    
+    
+    # Calculate interpolated concentrations
+    new_concentrations = interpolator(target_x)
+    
+    return target_x, new_concentrations
+
+
 
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
@@ -43,6 +107,12 @@ def create_grid(L, dx, T, dt):
     return x, num_time_steps            
 
 x, num_time_steps = create_grid(L, dx, T, dt)  # use function to generate list x and t
+
+original_dist, original_conc = read_boundary_conditions(csv_file)
+
+theta_init = interpolate_conditions(original_dist, original_conc, target_x=x, kind='linear')
+theta_init = np.array(theta_init)
+
 
 def cfl_number(U, dx, dt):
     # this computes cfl number 
@@ -100,87 +170,15 @@ def test_steady_advection_case():
     dt_test = 0.05 # Time Step.
     T_max_test = 1.0 # Total Simulation Time.
 
-    # Determine total iterations.
-    num_time_steps = int(T_max_test / dt_test)
-
-    # Calculate initial condition.
-    theta_init_test = np.full(int(1.0/0.1) + 1, 10.0)
+    x_test, time_points_test = create_grid(1.0, dx_test, T_max_test, dt_test)
+    theta_init_test = np.full(len(x_test), 10.0)
 
     # Run the solver.
-    theta_result = advect(theta_init_test, U_test, dx_test, dt_test, num_time_steps)
+    theta_result = advect(theta_init_test, U_test, dx_test, dt_test, time_points_test)
 
     assert np.allclose(theta_result[-1, :], 10.0, atol=1e-5), "Steady Advection test failed."
     print("Steady Advection test passed successfully (Result is approximately constant)>")
 
-
-
-#----------THIRD-----------
-
-import numpy as np
-from data_handler import read_boundary_conditions, interpolate_conditions
-from scipy.interpolate import interp1d
-import matplotlib.pyplot as plt
-import pandas as pd
-import os
-
-def read_boundary_conditions(csv_file):
-    """
-    Reads the initial boundary condition data from a CSV file.
-
-    Args:
-        file_path (str): The path to the CSV file.
-
-    Returns:
-        tuple: A tuple containing two numpy arrays:
-               - distances (x coordinates)
-               - concentrations (pollutant levels)
-    """
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"The file {file_path} does not exist.")
-
-    try:
-        # Load data using pandas
-        # Assuming the CSV has headers like 'Distance (m)' and 'Concentration (µg/m³)'
-        # We use index_col=False to ensure we just get the columns as they are
-        df = pd.read_csv(file_path)
-        
-        # Extract columns. We assume the first column is distance and second is concentration.
-        # You might need to adjust column names based on the exact CSV format if headers differ.
-        distances = df.iloc[:, 0].values
-        concentrations = df.iloc[:, 1].values
-        
-        return distances, concentrations
-
-    except Exception as e:
-        raise RuntimeError(f"An error occurred while reading the file: {e}")
-
-def interpolate_conditions(distances, concentrations, num_points=100, kind='linear'):
-    """
-    Interpolates the concentration data to a finer grid.
-
-    Args:
-        distances (np.array): Original distance points.
-        concentrations (np.array): Original concentration values.
-        num_points (int): The number of points desired in the interpolated grid.
-        kind (str): The type of interpolation ('linear', 'cubic', etc.).
-
-    Returns:
-        tuple: A tuple containing:
-               - new_distances (the finer grid)
-               - new_concentrations (interpolated values)
-    """
-    # Create an interpolation function based on the input data
-    # fill_value="extrapolate" allows estimation outside the original range if needed,
-    # though usually we stay within the bounds.
-    interpolator = interp1d(distances, concentrations, kind=kind, fill_value="extrapolate")
-    
-    # Generate a new, finer grid of distances
-    new_distances = np.linspace(min(distances), max(distances), num_points)
-    
-    # Calculate interpolated concentrations
-    new_concentrations = interpolator(new_distances)
-    
-    return new_distances, new_concentrations
 
 def plot_data(original_dist, original_conc, interp_dist, interp_conc):
     """
@@ -199,17 +197,17 @@ def plot_data(original_dist, original_conc, interp_dist, interp_conc):
 # Example Usage
 if __name__ == "__main__":
     # Path to your uploaded file
-    file_path = 'initial_conditions.csv' 
+
     
     try:
         # 1. Read Data
-        dist, conc = read_boundary_conditions(file_path)
+        dist, conc = read_boundary_conditions(csv_file)
         print("Data read successfully.")
         print(f"Original Distance points: {len(dist)}")
 
         # 2. Interpolate Data
         # Generating a grid with more points (e.g., 50) for smoother simulation input
-        new_dist, new_conc = interpolate_conditions(dist, conc, num_points=100, kind='cubic')
+        new_dist, new_conc = interpolate_conditions(dist, conc, target=x, kind='cubic')
         print("Data interpolated successfully.")
 
         # 3. Plot to visualize
