@@ -20,7 +20,7 @@ except ValueError:
     raise SystemExit("type wrong")
     
 
-df = pd.read_csv(csv_file)
+df = pd.read_csv(csv_file, encoding="latin1")
 theta_init = df.iloc[:, 1]           # defult the second column is concentration !!! may be a bug will here, 
                                      # if the csv file secound column is not concentration data !!!
 
@@ -123,7 +123,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-def read_boundary_conditions(intial_conditions.csv):
+def read_boundary_conditions(csv_file):
     """
     Reads the initial boundary condition data from a CSV file.
 
