@@ -130,7 +130,7 @@ def is_cfl_stable(U, dx, dt):
 # ---------------------SECOUND PART ------------------------
 
 
-def advect(theta_init, U, dx, dt, num_time_steps): 
+def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0): 
     # Solves the advection equation using the first-order upwind scheme.
     # Calculate the CFL number which represents how much information travels across a grid cell in one time step.
     CFL = U * dt / dx
@@ -156,12 +156,16 @@ def advect(theta_init, U, dx, dt, num_time_steps):
 
         # Boundary condition: Set LHS boundary to 0.
         theta_next[0] = theta_init[0]
-
+        theta_next = theta_next * np.exp(-decay_k * dt)
+        
         # Progress to next step.
         theta_current = theta_next
         theta_all[n + 1, :] = theta_current
-
     return theta_all
+
+def solve_advection(x, num_time_steps, U, theta_init, decay_k=0.0):
+    return advect(theta_init, U, dx, num_time_steps, decay_k)
+
 
 def test_steady_advection_case():
     # Parameters for the simulation.
@@ -212,7 +216,10 @@ if __name__ == "__main__":
 
         # 3. Plot to visualize
         plot_data(dist, conc, new_dist, new_conc)
-        
+
+
+
+    
     except Exception as e:
         print(e)
 
@@ -222,7 +229,7 @@ if __name__ == "__main__":
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_initial(x, C0):
+def plot_initial(x, theta_init):
     plt.figure()
     plt.plot(x, C0, "o-")
     plt.xlabel("x (m)")
@@ -232,7 +239,7 @@ def plot_initial(x, C0):
     plt.show()
 
 
-def plot_snapshots(x, t, C_hist):
+def plot_snapshots(x, num_time_steps, C_hist):
     C_hist = np.array(C_hist)
     t = np.array(t)
     nt = len(t)
@@ -266,7 +273,7 @@ def plot_heatmap(x, t, C_hist):
     plt.xlabel("x (m)")
     plt.ylabel("t (s)")
     plt.title("Space-time plot")
-plt.show()
+    plt.show()
 
 from plotting import plot_initial, plot_snapshots, plot_heatmap
 
@@ -280,7 +287,7 @@ plot_heatmap(x, t, C_hist)
 main model file has these functions:
 •	make_grid(x_max, dx, t_max, dt) → returns x, t
 •	solve_advection(x, t, U, C0, decay_k=0.0) → returns C_hist
-•	read_initial_conditions_csv(path, x_grid) → returns C0
+•	read_boundary_conditions(path, x_grid) → returns C0
 
 
 
@@ -291,7 +298,7 @@ from src.model import make_grid, solve_advection, read_initial_conditions_csv
 
 
 def test_case1_run():
-    x, t = make_grid(x_max=20.0, dx=0.2, t_max=300.0, dt=10.0)
+    x, t = create_grid(x_max=20.0, dx=0.2, t_max=300.0, dt=10.0)
 
     C0 = np.zeros_like(x)
     C0[0] = 250.0  # pulse at left
