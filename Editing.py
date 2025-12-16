@@ -33,13 +33,7 @@ def read_boundary_conditions(csv_file):
         raise FileNotFoundError(f"The file {csv_file} does not exist.")
 
     try:
-        # Load data using pandas
-        # Assuming the CSV has headers like 'Distance (m)' and 'Concentration (µg/m³)'
-        # We use index_col=False to ensure we just get the columns as they are
         df = pd.read_csv(csv_file, encoding="latin1")
-        
-        # Extract columns. We assume the first column is distance and second is concentration.
-        # You might need to adjust column names based on the exact CSV format if headers differ.
         distances = df.iloc[:, 0].values
         concentrations = df.iloc[:, 1].values
         
@@ -49,18 +43,10 @@ def read_boundary_conditions(csv_file):
         raise RuntimeError(f"An error occurred while reading the file: {e}")
 
 def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
-    
     interpolator = interp1d(distances, concentrations, kind=kind, fill_value="extrapolate")
-    
-    
-    
     # Calculate interpolated concentrations
     new_concentrations = interpolator(target_x)
-    
     return target_x, new_concentrations
-
-
-
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
     # L = length of river domain (m)
@@ -88,7 +74,6 @@ theta_init = np.array(theta_init)
 
 
 def cfl_number(U, dx, dt):
-    # this computes cfl number 
     if dx <= 0 or dt <= 0:
         raise ValueError('dx and dt must be positive')
 
@@ -96,7 +81,6 @@ def cfl_number(U, dx, dt):
 
 
 def is_cfl_stable(U, dx, dt):
-    # This checks the CFL stability condition
     return cfl_number(U, dx, dt) <= 1           ## maybe can delete this, because secound part has test
 
 
@@ -108,26 +92,25 @@ def advect(theta_init, U, dx, dt, num_time_steps):
     # Calculate the CFL number which represents how much information travels across a grid cell in one time step.
     CFL = U * dt / dx
 
-    # This is a stability check as upwind schemes require CFL <= 1 to remain numerically stable.
+   
     if CFL > 1.0:
       print(f"*** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL={CFL:.2f}). Solution is unstable. ***")
 
     num_points = len(theta_init)
     theta_current = theta_init.copy()
 
-    # Initialise a 2D array to store the profile at every time step.
+  
     theta_all = np.zeros((len(num_time_steps), num_points))
     theta_all[0, :] = theta_init
 
     for n in range(len(num_time_steps) - 1):  
-        # Calculate the spatial difference (Upwind: theta[i] - theta[i-1]).
+        # Calculate the spatial difference 
         d_theta = -CFL * (theta_current[1:] - theta_current[:-1])
 
-        # Update the profile for next time step.
         theta_next = theta_current.copy()
         theta_next[1:] = theta_current[1:] + d_theta
 
-        # Boundary condition: Set LHS boundary to 0.
+        # Boundary condition: Set Left side boundary to 0.
         theta_next[0] = theta_init[0]
 
         # Progress to next step.
@@ -137,7 +120,7 @@ def advect(theta_init, U, dx, dt, num_time_steps):
     return theta_all
 
 def test_steady_advection_case():
-    # Parameters for the simulation.
+    # Our test parameters for the simulation.
     U_test = 1.0 # Velocity.
     dx_test = 0.1 # Spatial Step.
     dt_test = 0.05 # Time Step.
@@ -165,23 +148,23 @@ def plot_data(original_dist, original_conc, interp_dist, interp_conc):
     plt.grid(True)
     plt.show()
 
-# Example Usage
+# Example
 if __name__ == "__main__":
     # Path to your uploaded file
 
     
     try:
-        # 1. Read Data
+        # 1. Reading Data
         dist, conc = read_boundary_conditions(csv_file)
         print("Data read successfully.")
         print(f"Original Distance points: {len(dist)}")
 
-        # 2. Interpolate Data
+        # 2. Interpolating Data
         # Generating a grid with more points (e.g., 50) for smoother simulation input
         new_dist, new_conc = interpolate_conditions(dist, conc, target_x=x, kind='cubic')
         print("Data interpolated successfully.")
 
-        # 3. Plot to visualize
+        # 3. A Plot to visualize
         plot_data(dist, conc, new_dist, new_conc)
         
     except Exception as e:
