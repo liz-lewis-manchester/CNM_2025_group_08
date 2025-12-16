@@ -51,23 +51,19 @@ def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
     return target_x, new_concentrations
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
-    # L = length of river domain (m)
-    # dx = change in space (m) 
-    # T = simulation time (s)
-    # dt = change in time (s) 
-
+    
     if L <= 0 or dx <= 0 or dt <= 0 or T < 0:
-        raise ValueError('Invalid grid parameters')
+        raise ValueError('Parameters are invalid')
 
     nx = int(L/dx) + 1  
     nt = int(T/dt) + 1
 
     x = np.linspace(0, L, nx)
-    num_time_steps = np.linspace(0, T, nt)
+    time_grid = np.linspace(0, T, nt)
 
-    return x, num_time_steps            
+    return x, time_grid            
 
-x, num_time_steps = create_grid(L, dx, T, dt)  # use function to generate list x and t
+x, time_grid = create_grid(L, dx, T, dt)  # use function to generate list x and t
 
 original_dist, original_conc = read_boundary_conditions(csv_file)
 
