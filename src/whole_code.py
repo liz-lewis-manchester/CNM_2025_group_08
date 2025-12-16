@@ -207,7 +207,7 @@ if __name__ == "__main__":
 
         # 2. Interpolate Data
         # Generating a grid with more points (e.g., 50) for smoother simulation input
-        new_dist, new_conc = interpolate_conditions(dist, conc, target=x, kind='cubic')
+        new_dist, new_conc = interpolate_conditions(dist, conc, target_x=x, kind='cubic')
         print("Data interpolated successfully.")
 
         # 3. Plot to visualize
