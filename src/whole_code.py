@@ -253,7 +253,7 @@ def test_case1_run():
 
 
 def test_case2_csv():
-    x, t = create_grid(x_max=2.0, dx=0.2, t_max=10.0, dt=5.0)
+    x, t = create_grid(2.0, 0.2, 10.0, 5.0)
 
     x_raw = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
     C_raw = np.array([5.0, 10.0, 8.0, 6.0, 3.0])
@@ -272,15 +272,17 @@ def test_case2_csv():
 
 
 def test_decay():
-    x, t = create_grid(x_max=5.0, dx=0.25, t_max=40.0, dt=5.0)
+    x, t = create_grid(5.0, 0.25, 40.0, 5.0)
 
     theta_init = np.zeros_like(x)
     theta_init[0] = 100.0
 
-    C_no_decay = advect(x, t, U=0.1, theta_init=theta_init, decay_k=0.0)
-    C_decay = advect(x, t, U=0.1, theta_init=theta_init, decay_k=0.02)
+    C_no_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.0)
+    C_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.02)
 
     max_no = C_no_decay.max()
     max_yes = C_decay.max()
 
     assert max_yes <= max_no + 1e-6
+
+
