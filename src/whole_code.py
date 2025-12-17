@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
 
 #-------------------FOURTH---------------------
-
+t = time_grid
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -231,11 +231,6 @@ def plot_heatmap(x, t, C_hist):
 
 
 
-plot_initial(x, C0)
-plot_snapshots(x, t, C_hist)
-plot_heatmap(x, t, C_hist)
-
-
 
 
 
@@ -245,12 +240,12 @@ plot_heatmap(x, t, C_hist)
 def test_case1_run():
     x, t = create_grid(20.0, 0.2, 300.0, 10.0)
     
-    C0 = np.zeros_like(x)
-    C0[0] = 250.0  # pulse at left
+    theta_init = np.zeros_like(x)
+    theta_init[0] = 250.0  # pulse at left
 
     U = 0.1
 
-    C_hist = advect(C0, U, 0.2, 10.0, t)
+    C_hist = advect(theta_init, U, 0.2, 10.0, t)
 
     assert C_hist.shape == (len(t), len(x))
 
@@ -268,22 +263,22 @@ def test_case2_csv():
     df.to_csv(csv_path, index=False)
 
     dist, conc = read_boundary_conditions(csv_path)
-    _, C0 = interpolate_conditions(dist, conc, target_x=x, kind='linear')
-    C0 = np.array(C0)
+    _, theta_init = interpolate_conditions(dist, conc, target_x=x, kind='linear')
+    theta_init = np.array(theta_init)
 
-    assert len(C0) == len(x)
+    assert len(theta_init) == len(x)
     # values should not explode
-    assert C0.min() >= 0.0
+    assert theta_init.min() >= 0.0
 
 
 def test_decay():
     x, t = create_grid(x_max=5.0, dx=0.25, t_max=40.0, dt=5.0)
 
-    C0 = np.zeros_like(x)
-    C0[0] = 100.0
+    theta_init = np.zeros_like(x)
+    theta_init[0] = 100.0
 
-    C_no_decay = advect(x, t, U=0.1, C0=C0, decay_k=0.0)
-    C_decay = advect(x, t, U=0.1, C0=C0, decay_k=0.02)
+    C_no_decay = advect(x, t, U=0.1, theta_init=theta_init, decay_k=0.0)
+    C_decay = advect(x, t, U=0.1, theta_init=theta_init, decay_k=0.02)
 
     max_no = C_no_decay.max()
     max_yes = C_decay.max()
