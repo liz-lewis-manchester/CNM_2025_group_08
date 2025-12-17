@@ -240,10 +240,6 @@ plot_heatmap(x, t, C_hist)
 
 
 
-import numpy as np
-import pandas as pd
-
-from src.model import make_grid, solve_advection, read_initial_conditions_csv
 
 
 def test_case1_run():
