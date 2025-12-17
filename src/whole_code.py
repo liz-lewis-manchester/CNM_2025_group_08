@@ -67,7 +67,7 @@ x, time_grid = create_grid(L, dx, T, dt)  # use function to generate list x and 
 
 original_dist, original_conc = read_boundary_conditions(csv_file)
 
-theta_init = interpolate_conditions(original_dist, original_conc, target_x=x, kind='linear')
+_, theta_init = interpolate_conditions(original_dist, original_conc, target_x=x, kind='linear')
 theta_init = np.array(theta_init)
 
 
