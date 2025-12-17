@@ -61,7 +61,9 @@ def create_grid(L, dx, T, dt):
     x = np.linspace(0, L, nx)
     time_grid = np.linspace(0, T, nt)
 
-    return x, time_grid            
+    return x, time_grid  
+
+
 
 x, time_grid = create_grid(L, dx, T, dt)  # use function to generate list x and t
 
@@ -85,7 +87,7 @@ def is_cfl_stable(U, dx, dt):
 # ---------------------SECOUND PART ------------------------
 
 
-def advect(theta_init, U, dx, dt, num_time_steps): 
+def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0):
     # Solves the advection equation using the first-order upwind scheme.
     # Calculate the CFL number which represents how much information travels across a grid cell in one time step.
     CFL = U * dt / dx
@@ -107,10 +109,12 @@ def advect(theta_init, U, dx, dt, num_time_steps):
 
         theta_next = theta_current.copy()
         theta_next[1:] = theta_current[1:] + d_theta
-
+        
         # Boundary condition: Set Left side boundary to 0.
         theta_next[0] = theta_init[0]
-
+        
+        theta_next = theta_next * np.exp(-decay_k * dt)
+        
         # Progress to next step.
         theta_current = theta_next
         theta_all[n + 1, :] = theta_current
@@ -164,7 +168,12 @@ if __name__ == "__main__":
 
         # 3. A Plot to visualize
         plot_data(dist, conc, new_dist, new_conc)
-        
+
+        C_hist = advect(theta_init, U, dx, dt, time_grid)
+
+        plot_initial(x, theta_init)
+        plot_snapshots(x, time_grid, C_hist)
+        plot_heatmap(x, time_grid, C_hist)
     except Exception as e:
         print(e)
 
@@ -176,9 +185,9 @@ import matplotlib.pyplot as plt
 
 def plot_initial(x, theta_init):
     plt.figure()
-    plt.plot(x, C0, "o-")
+    plt.plot(x, theta_init, "o-")
     plt.xlabel("x (m)")
-    plt.ylabel("C")
+    plt.ylabel("Concentration (µg/m³)")
     plt.title("Initial condition")
     plt.grid(True)
     plt.show()
@@ -186,7 +195,7 @@ def plot_initial(x, theta_init):
 
 def plot_snapshots(x, num_time_steps, C_hist):
     C_hist = np.array(C_hist)
-    t = np.array(t)
+    t = np.array(num_time_steps)
     nt = len(t)
 
     idx_list = [0, nt // 2, nt - 1]
@@ -220,7 +229,7 @@ def plot_heatmap(x, t, C_hist):
     plt.title("Space-time plot")
     plt.show()
 
-from plotting import plot_initial, plot_snapshots, plot_heatmap
+
 
 plot_initial(x, C0)
 plot_snapshots(x, t, C_hist)
@@ -243,14 +252,14 @@ from src.model import make_grid, solve_advection, read_initial_conditions_csv
 
 
 def test_case1_run():
-    x, t = create_grid(x_max=20.0, dx=0.2, t_max=300.0, dt=10.0)
-
+    x, t = create_grid(20.0, 0.2, 300.0, 10.0)
+    
     C0 = np.zeros_like(x)
     C0[0] = 250.0  # pulse at left
 
     U = 0.1
 
-    C_hist = solve_advection(x, t, U, C0)
+    C_hist = advect(C0, U, 0.2, 10.0, t)
 
     assert C_hist.shape == (len(t), len(x))
 
@@ -258,7 +267,7 @@ def test_case1_run():
 
 
 def test_case2_csv():
-    x, t = make_grid(x_max=2.0, dx=0.2, t_max=10.0, dt=5.0)
+    x, t = create_grid(x_max=2.0, dx=0.2, t_max=10.0, dt=5.0)
 
     x_raw = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
     C_raw = np.array([5.0, 10.0, 8.0, 6.0, 3.0])
@@ -267,7 +276,9 @@ def test_case2_csv():
     csv_path = "tmp_ic.csv"
     df.to_csv(csv_path, index=False)
 
-    C0 = read_initial_conditions_csv(csv_path, x)
+    dist, conc = read_boundary_conditions(csv_path)
+    _, C0 = interpolate_conditions(dist, conc, target_x=x, kind='linear')
+    C0 = np.array(C0)
 
     assert len(C0) == len(x)
     # values should not explode
@@ -275,13 +286,13 @@ def test_case2_csv():
 
 
 def test_decay():
-    x, t = make_grid(x_max=5.0, dx=0.25, t_max=40.0, dt=5.0)
+    x, t = create_grid(x_max=5.0, dx=0.25, t_max=40.0, dt=5.0)
 
     C0 = np.zeros_like(x)
     C0[0] = 100.0
 
-    C_no_decay = solve_advection(x, t, U=0.1, C0=C0, decay_k=0.0)
-    C_decay = solve_advection(x, t, U=0.1, C0=C0, decay_k=0.02)
+    C_no_decay = advect(x, t, U=0.1, C0=C0, decay_k=0.0)
+    C_decay = advect(x, t, U=0.1, C0=C0, decay_k=0.02)
 
     max_no = C_no_decay.max()
     max_yes = C_decay.max()
