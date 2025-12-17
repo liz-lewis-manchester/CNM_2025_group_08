@@ -238,11 +238,6 @@ plot_heatmap(x, t, C_hist)
 
 
 
-main model file has these functions:
-•	make_grid(x_max, dx, t_max, dt) → returns x, t
-•	solve_advection(x, t, U, C0, decay_k=0.0) → returns C_hist
-•	read_boundary_conditions(path, x_grid) → returns C0
-
 
 
 import numpy as np
