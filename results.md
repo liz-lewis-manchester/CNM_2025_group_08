@@ -54,6 +54,13 @@ Data interpolated successfully.
 <img width="580" height="450" alt="截屏2025-12-18 20 58 59" src="https://github.com/user-attachments/assets/873a4b44-b808-4ea5-bab6-eaabb6f3fcc6" />
 <img width="567" height="456" alt="截屏2025-12-18 20 59 07" src="https://github.com/user-attachments/assets/cd18c80b-818b-4253-894a-492dbc81287b" />
 
+Test Case 3 Result (Use the same data as test 2 and change the Values of U, spatial and temporal resolution srespectively)
+
+# change U from 0.1 to 0.5 to 1
+
+
+
+
 
 
 
