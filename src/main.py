@@ -21,7 +21,7 @@ if __name__ == "__main__":
       raise SystemExit("type wrong")
 
   try:
-    x, time_grid = create_grid(L, dx, T, dt)  # use function to generate list x and t
+    x, num_time_steps = create_grid(L, dx, T, dt)  # use function to generate list x and t
 
      # 1. Reading Data
     dist, conc = read_boundary_conditions(csv_file)
@@ -30,16 +30,16 @@ if __name__ == "__main__":
 
         # 2. Interpolating Data
         # Generating a grid with more points (e.g., 50) for smoother simulation input
-    new_dist, new_conc = interpolate_conditions(dist, conc, target_x=x, kind='cubic')
+    new_dist, theta_init = interpolate_conditions(dist, conc, target_x=x, kind='cubic')
     print("Data interpolated successfully.")
 
         # 3. A Plot to visualize
     plot_data(dist, conc, new_dist, new_conc)
 
-    C_hist = advect(theta_init, U, dx, dt, time_grid)
+    theta = advect(theta_init, U, dx, dt, num_time_steps)
 
     plot_initial(x, theta_init)
-    plot_snapshots(x, time_grid, C_hist)
-    plot_heatmap(x, time_grid, C_hist)
+    plot_snapshots(x, num_time_steps, theta)
+    plot_heatmap(x, num_time_steps, theta)
   except Exception as e:
     print(e)
