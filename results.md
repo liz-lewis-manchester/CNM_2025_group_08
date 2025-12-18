@@ -1,13 +1,23 @@
 Test Case 1 Result
+
 csv filetest_case1.csv
+
 length of river domain (m): 20
+
 change in space (m): 0.2
+
 simulation time (s): 300
+
 change in time (s): 10
+
 velocity (ms^-1): 0.1
+
 Data read successfully.
+
 Original Distance points: 21
+
 Data interpolated successfully.
+
 <img width="448" height="290" alt="截屏2025-12-18 21 16 09" src="https://github.com/user-attachments/assets/baf9f1bc-275c-4239-9190-be41de2e2f5c" />
 
 *** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL=5.00). Solution is unstable. ***
@@ -17,15 +27,25 @@ Data interpolated successfully.
 <img width="467" height="368" alt="截屏2025-12-18 21 17 28" src="https://github.com/user-attachments/assets/d22bbdb8-3770-453d-9814-c5bb867e7fdd" />
 
 Test Cases 2 Result
+
 csv fileinitial_conditions.csv
+
 length of river domain (m): 20
+
 change in space (m): 0.2
+
 simulation time (s): 300
+
 change in time (s): 10
+
 velocity (ms^-1): 0.1
+
 Data read successfully.
+
 Original Distance points: 21
+
 Data interpolated successfully.
+
 <img width="592" height="358" alt="截屏2025-12-18 20 57 54" src="https://github.com/user-attachments/assets/6fd1ac33-e844-4384-8c1f-c3f1e1d8cf2e" />
 
 *** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL=5.00). Solution is unstable. ***
