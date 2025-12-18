@@ -1,3 +1,4 @@
+#-----first and third-----
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
@@ -22,12 +23,6 @@ try:
     U = float(U)
 except ValueError:
     raise SystemExit("type wrong")
-    
-    
-#----------THIRD-----------
-
-
-
 
 def read_boundary_conditions(csv_file):
 
@@ -49,6 +44,7 @@ def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
     # Calculate interpolated concentrations
     new_concentrations = interpolator(target_x)
     return target_x, new_concentrations
+
 def create_grid(L, dx, T, dt):
     # this creates spatial and temporal grids 
     
@@ -65,7 +61,9 @@ def create_grid(L, dx, T, dt):
 
 
 
-x, time_grid = create_grid(L, dx, T, dt)  # use function to generate list x and t
+x, time_grid = create_grid(L, dx, T, dt)  
+
+# use function to generate list x and t
 
 original_dist, original_conc = read_boundary_conditions(csv_file)
 
