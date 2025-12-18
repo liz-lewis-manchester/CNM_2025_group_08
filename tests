@@ -1,1 +1,52 @@
+import numpy as np
+import os
+from src.model import (
+    read_boundary_conditions, interpolate_conditions,
+    create_grid, advect)
+def test_case1_run():
+    x, t = create_grid(20.0, 0.2, 300.0, 10.0)
+    
+    theta_init = np.zeros_like(x)
+    theta_init[0] = 250.0  # pulse at left
 
+    U = 0.1
+
+    C_hist = advect(theta_init, U, 0.2, 10.0, t)
+
+    assert C_hist.shape == (len(t), len(x))
+
+    assert C_hist.min() >= -1e-6
+
+
+def test_case2_csv():
+    x, t = create_grid(2.0, 0.2, 10.0, 5.0)
+
+    x_raw = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
+    C_raw = np.array([5.0, 10.0, 8.0, 6.0, 3.0])
+
+    df = pd.DataFrame({"x": x_raw, "C": C_raw})
+    csv_path = "tmp_ic.csv"
+    df.to_csv(csv_path, index=False)
+
+    dist, conc = read_boundary_conditions(csv_path)
+    _, theta_init = interpolate_conditions(dist, conc, target_x=x, kind='linear')
+    theta_init = np.array(theta_init)
+
+    assert len(theta_init) == len(x)
+    # values should not explode
+    assert theta_init.min() >= 0.0
+
+
+def test_decay():
+    x, t = create_grid(5.0, 0.25, 40.0, 5.0)
+
+    theta_init = np.zeros_like(x)
+    theta_init[0] = 100.0
+
+    C_no_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.0)
+    C_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.02)
+
+    max_no = C_no_decay.max()
+    max_yes = C_decay.max()
+
+    assert max_yes <= max_no + 1e-6
