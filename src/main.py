@@ -4,7 +4,7 @@ from model import (read_boundary_conditions, interpolate_conditions,
 from plotting import (plot_data, plot_initial, plot_snapshots, plot_heatmap)
 
 if __name__ == "__main__":
-  csv_file = input("csv file")
+  csv_file = input("csv file: ")
   L = input("length of river domain (m): ")
   dx = input("change in space (m): ")
   T = input("simulation time (s): ")
