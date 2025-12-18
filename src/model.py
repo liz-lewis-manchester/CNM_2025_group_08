@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
+import os
 
 def read_boundary_conditions(csv_file):
 
