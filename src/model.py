@@ -45,7 +45,7 @@ def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0):
     
     if CFL > max_CFL:
         dt_new = max_CFL * dx / U
-        print(f"*** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL={CFL:.2f}). Solution is unstable. ***")
+        print(f"*** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL={CFL:.2f}). Changing dt from {dt:.2f}s to {dt_new:.2f}s". ***")
         dt = dt_new
         CFL = max_CFL
     num_points = len(theta_init)
