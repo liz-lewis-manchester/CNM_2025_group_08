@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print("Data interpolated successfully.")
 
         # 3. A Plot to visualize
-    plot_data(dist, conc, new_dist, new_conc)
+    plot_data(dist, conc, new_dist, theta_init)
 
     theta = advect(theta_init, U, dx, dt, num_time_steps)
 
