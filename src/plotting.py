@@ -22,7 +22,7 @@ def plot_initial(x, theta_init):
     plt.grid(True)
     plt.show()
 
-def plot_snapshots(x, num_time_steps, C_hist):
+def plot_snapshots(x, time_grid, C_hist):
     C_hist = np.array(C_hist)
     t = np.array(num_time_steps)
     nt = len(t)
@@ -39,7 +39,7 @@ def plot_snapshots(x, num_time_steps, C_hist):
     plt.grid(True)
     plt.show()
 
-def plot_heatmap(x, t, C_hist):
+def plot_heatmap(x, time_grid, C_hist):
     x = np.array(x)
     t = np.array(t)
     C_hist = np.array(C_hist)
