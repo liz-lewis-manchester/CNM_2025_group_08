@@ -36,7 +36,7 @@ if __name__ == "__main__":
         # 3. A Plot to visualize
     plot_data(dist, conc, new_dist, theta_init)
 
-    theta, time_grid = advect(theta_init, U, dx, dt, T)
+    theta_all, time_grid = advect(theta_init, U, dx, dt, T)
 
     plot_initial(x, theta_init)
     plot_snapshots(x, time_grid, theta)
