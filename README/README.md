@@ -67,9 +67,33 @@ the main equation is  ∂t/∂θ	=−U*(∂x/∂θ),
 
      to run the whole logic of the modeling.
 
+ # How to run the code
+ 
+ 1. open the scr file
 
+ 2. then open the model.py, copy all the code in this file to a python system
+
+ 3. then open the poltting.py file, don not copy import..from... if you want to combaine
+
+    model.py and poltting.py together.
+
+ 4. open the main.py file, don not copy import..from... if you want to combaine
+
+    model.py , poltting.py and main.py together.
    
+ 5. input the suitable parameters, please sure that the unit of all parameters suitable
+    length of river domain (m)
 
+    change in space (m):
+
+    simulation time (s):
+
+    change in time (s):
+
+    velocity (ms^-1): and csv file has a suitable structure.
+    
+
+    
 
 
 
