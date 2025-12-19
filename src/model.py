@@ -33,7 +33,7 @@ def create_grid(L, dx, T):
     x = np.linspace(0, L, nx)
     return x, T
     
-x, T = create_grid(L, dx, T)
+
 
 def advect(theta_init, U, dx, dt, T, decay_k=0.0):
     # Solves the advection equation using the first-order upwind scheme.
@@ -50,7 +50,7 @@ def advect(theta_init, U, dx, dt, T, decay_k=0.0):
         dt = dt
 
     num_time_steps = int(T / dt) + 1
-    time_grid = np.linspace(0, T_total, num_time_steps)
+    time_grid = np.linspace(0, T, num_time_steps)
     num_points = len(theta_init)
     theta_current = theta_init.copy()
     theta_all = np.zeros((len(num_time_steps), num_points))
