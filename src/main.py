@@ -21,7 +21,7 @@ if __name__ == "__main__":
       raise SystemExit("type wrong")
 
   try:
-    x, num_time_steps = create_grid(L, dx, T)  # use function to generate list x and t
+    x, T = create_grid(L, dx, T)  # use function to generate list x and t
 
      # 1. Reading Data
     dist, conc = read_boundary_conditions(csv_file)
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     theta, time_grid = advect(theta_init, U, dx, dt, T)
 
     plot_initial(x, theta_init)
-    plot_snapshots(x, num_time_steps, theta)
-    plot_heatmap(x, num_time_steps, theta)
+    plot_snapshots(x, time_grid, theta)
+    plot_heatmap(x, time_grid, theta)
   except Exception as e:
     print(e)
