@@ -19,7 +19,7 @@ def read_boundary_conditions(csv_file):
         raise RuntimeError(f"An error occurred while reading the file: {e}")
 
 def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
-    interpolator = interp1d(distances, concentrations, kind=kind, fill_value="extrapolate")
+    interpolator = interp1d(distances, concentrations, kind=kind, bounds_error=False, fill_value=0.0)
     # Calculate interpolated concentrations
     new_concentrations = interpolator(target_x)
     return target_x, new_concentrations
@@ -29,9 +29,9 @@ def create_grid(L, dx, T):
     if L <= 0 or dx <= 0 or T < 0:
         raise ValueError('Parameters are invalid')
 
-    nx = int(L/dx) + 1
+    nx = int(np.ceil(L / dx)) + 1
     x = np.linspace(0, L, nx)
-    return x, T
+    return x
     
 
 
@@ -65,7 +65,7 @@ def advect(theta_init, U, dx, dt, T, decay_k=0.0):
         
         # Boundary condition: Set Left side boundary to 0.
         theta_next[0] = theta_current[0]
-        theta_next[-1] = theta_current[-1]
+        theta_next[-1] = theta_current[-2]
         
         theta_next = theta_next * np.exp(-decay_k * dt)
         
