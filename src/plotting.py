@@ -11,7 +11,7 @@ def plot_data(original_dist, original_conc, interp_dist, interp_conc):
     plt.title('Pollutant Concentration Interpolation')
     plt.legend()
     plt.grid(True)
-    plt.show(block=False) + plt.pause(1)
+    plt.show(block=False); plt.pause(1)
 
 def plot_initial(x, theta_init):
     plt.figure()
