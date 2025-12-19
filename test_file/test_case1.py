@@ -9,8 +9,8 @@ def test_case1_run():
 
     U = 0.1
 
-    C_hist, time_grid = advect(theta_init, U, 0.2, dt, T)
+    C_hist, time_grid = advect(theta_init, U, 0.2, dt, 300.0)
 
-    assert C_hist.shape == (len(t), len(x))
+    assert C_hist.shape == (len(time_grid), len(x))
 
     assert C_hist.min() >= -1e-6
