@@ -11,7 +11,7 @@ def plot_data(original_dist, original_conc, interp_dist, interp_conc):
     plt.title('Pollutant Concentration Interpolation')
     plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.show(block=False) + plt.pause(1)
 
 def plot_initial(x, theta_init):
     plt.figure()
@@ -20,7 +20,7 @@ def plot_initial(x, theta_init):
     plt.ylabel("Concentration (µg/m³)")
     plt.title("Initial condition")
     plt.grid(True)
-    plt.show()
+    plt.show(block=False) + plt.pause(1)
 
 def plot_snapshots(x, time_grid, C_hist):
     C_hist = np.array(C_hist)
@@ -37,7 +37,7 @@ def plot_snapshots(x, time_grid, C_hist):
     plt.title("C vs x at different times")
     plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.show(block=False) + plt.pause(1)
 
 def plot_heatmap(x, time_grid, C_hist):
     x = np.array(x)
@@ -55,4 +55,4 @@ def plot_heatmap(x, time_grid, C_hist):
     plt.xlabel("x (m)")
     plt.ylabel("t (s)")
     plt.title("Space-time plot")
-    plt.show()
+    plt.show(block=True)
