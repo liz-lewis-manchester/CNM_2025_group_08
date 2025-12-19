@@ -72,7 +72,5 @@ def advect(theta_init, U, dx, dt, T, decay_k=0.0):
         # Progress to next step.
         theta_current = theta_next
         theta_all[n + 1, :] = theta_current
-        
-    
     
     return theta_all, time_grid
