@@ -20,7 +20,7 @@ def test_param_sensitivity():
    theta_init_dx1 = np.zeros_like(x_dx1)
    theta_init_dx1[0] = 250.0
    C_hist_dx1, time_grid_dx1 = advect(theta_init_dx1, 0.1, 0.1, 10.0, 300.0)
-   assert C_hist_dx1.shape == (len(time_grid_dx1), len(x_dx1)), "Error when dt=0.1s"
+   assert C_hist_dx1.shape == (len(time_grid_dx1), len(x_dx1)), "Error when dx=0.1s"
 
    x_dx2 = create_grid(20.0, 0.5, 300.0)
    theta_init_dx2 = np.zeros_like(x_dx2)
