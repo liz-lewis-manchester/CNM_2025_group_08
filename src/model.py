@@ -53,10 +53,10 @@ def advect(theta_init, U, dx, dt, T, decay_k=0.0):
     time_grid = np.linspace(0, T, num_time_steps)
     num_points = len(theta_init)
     theta_current = theta_init.copy()
-    theta_all = np.zeros(num_time_steps, num_points)
+    theta_all = np.zeros((num_time_steps, num_points))
     theta_all[0, :] = theta_init
 
-    for n in range(len(num_time_steps) - 1):  
+    for n in range(num_time_steps - 1):  
         # Calculate the spatial difference 
         d_theta = -CFL * (theta_current[1:] - theta_current[:-1])
 
