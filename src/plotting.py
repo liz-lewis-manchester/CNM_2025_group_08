@@ -45,7 +45,7 @@ def plot_snapshots(x, time_grid, theta_all):
 def plot_heatmap(x, time_grid, theta_all):
     x = np.array(x)
     t = np.array(time_grid)
-    C_hist = np.array(theta_all)
+    C_hist = np.array(theta_all).T
 
     plt.figure()
     plt.imshow(
