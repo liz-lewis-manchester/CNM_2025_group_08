@@ -39,19 +39,24 @@ try:
     assert theta_init.min() >= 0.0
 
 
+
+
+import numpy as np
+from src.model import create_grid, advect
+
 def test_decay():
-    x, t = create_grid(5.0, 0.25, 40.0, 5.0)
+    x = create_grid(5.0, 0.25, 40.0)
 
     theta_init = np.zeros_like(x)
     theta_init[0] = 100.0
 
-    C_no_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.0)
-    C_decay = advect(theta_init, 0.1, 0.25, 5.0, t, 0.02)
+    C_no_decay, _ = advect(theta_init, 0.1, 0.25, 5.0, 40.0, decay_k=0.0)
+    C_decay, _ = advect(theta_init, 0.1, 0.25, 5.0, 40.0, decay_k=0.02)
 
     max_no = C_no_decay.max()
     max_yes = C_decay.max()
 
-    assert max_yes <= max_no + 1e-6
+    assert max_yes <= max_no + 1e-6, "Error"
 
 def test_param_sensitivity():
     x, time_grid = create_grid(20.0, 0.2, 300.0, 10.0)
