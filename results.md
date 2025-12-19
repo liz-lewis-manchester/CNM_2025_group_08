@@ -1,53 +1,76 @@
 Test Case 1 Result
 
 csv file: test_case1.csv
+
 length of river domain (m): 20
+
 change in space (m): 0.2
+
 simulation time (s): 300
+
 change in time (s): 10
+
 velocity (ms^-1): 0.1
+
 Data read successfully.
+
 Original Distance points: 21
+
 Data interpolated successfully.
 
-<img width="558" height="352" alt="截屏2025-12-19 00 16 13" src="https://github.com/user-attachments/assets/672cb38f-42da-4549-9ac5-2a77a0d410a0" />
+<img width="563" height="358" alt="截屏2025-12-19 02 42 29" src="https://github.com/user-attachments/assets/9993a3f1-36b4-435a-8e33-a3efb4b3dd28" />
 
 *** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL=5.00). Changing dt from 10.00s to 1.80s ***
 
-<img width="565" height="437" alt="截屏2025-12-19 00 16 38" src="https://github.com/user-attachments/assets/382f31d6-fba5-480a-addc-2ebb284e2d35" />
+<img width="569" height="436" alt="截屏2025-12-19 02 43 07" src="https://github.com/user-attachments/assets/9b699c56-28a0-4ded-a6be-08abc8d55e05" />
 
-<img width="572" height="441" alt="截屏2025-12-19 00 16 53" src="https://github.com/user-attachments/assets/dfd2c929-6483-4c35-be21-ca7844b2800a" />
+<img width="576" height="447" alt="截屏2025-12-19 02 43 21" src="https://github.com/user-attachments/assets/4c99148b-0cd6-43f3-89ce-89ae16651c25" />
 
-<img width="565" height="446" alt="截屏2025-12-19 00 17 04" src="https://github.com/user-attachments/assets/22406a18-f388-46c6-bc95-8dc403318d4d" />
-
+<img width="576" height="446" alt="截屏2025-12-19 02 43 36" src="https://github.com/user-attachments/assets/26cbab7f-a6c9-4c29-b183-425b11bb7894" />
 
 Test Cases 2 Result
 
 csv file: initial_conditions.csv
+
 length of river domain (m): 20
+
 change in space (m): 0.2
+
 simulation time (s): 300
+
 change in time (s): 10
+
 velocity (ms^-1): 0.1
+
 Data read successfully.
+
 Original Distance points: 21
+
 Data interpolated successfully.
 
-<img width="562" height="355" alt="截屏2025-12-19 00 18 17" src="https://github.com/user-attachments/assets/8a20f4c1-817f-4bd0-aeda-c302f371e695" />
+<img width="571" height="355" alt="截屏2025-12-19 02 45 17" src="https://github.com/user-attachments/assets/33f6459e-a5d5-4bd2-9cb3-2ea91aa753fa" />
 
 *** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL=5.00). Changing dt from 10.00s to 1.80s ***
 
-<img width="575" height="433" alt="截屏2025-12-19 00 20 11" src="https://github.com/user-attachments/assets/71ef1948-6429-4c3e-af51-7211a2131ba7" />
+<img width="569" height="425" alt="截屏2025-12-19 02 45 41" src="https://github.com/user-attachments/assets/2e9b4e92-7dab-415a-9e90-a94189c71264" />
 
-<img width="578" height="442" alt="截屏2025-12-19 00 20 24" src="https://github.com/user-attachments/assets/9b01d3da-08bc-4468-872e-cc60277accda" />
+<img width="574" height="442" alt="截屏2025-12-19 02 45 54" src="https://github.com/user-attachments/assets/b5bad6d7-6f25-4bdf-a19a-5635bc64b18b" />
 
-<img width="575" height="451" alt="截屏2025-12-19 00 20 39" src="https://github.com/user-attachments/assets/d299b82f-8551-44fe-aad9-046530fc92ff" />
+<img width="563" height="447" alt="截屏2025-12-19 02 46 07" src="https://github.com/user-attachments/assets/a42a426a-9595-4f0e-8898-7ed6dd6c6023" />
 
-# Result from case 2:can read in any initial conditions provided and to interpolate them onto the model grid. 
+# Result from case 2: Can read in any initial conditions provided and to interpolate them onto the model grid. 
 
 Test Case 3 Result (Use the same data as test 2 and change the Values of U, spatial and temporal resolution srespectively)
 
-# change U from 0.1 to 0.5 to 1
+# Result for test 3
+For U, it had the largest influence on pollution transport, 
+Spatial resolution (dx) affact the grids, finer grids reduced oscillations, and vice versa
+Temporal resolution (dt) will affect CFL, if it was too large, the modle will be instability. 
+
+test 4, change 
+
+
+
 
 
 
