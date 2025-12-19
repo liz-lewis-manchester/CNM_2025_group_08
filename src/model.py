@@ -23,21 +23,19 @@ def interpolate_conditions(distances, concentrations, target_x, kind='linear'):
     # Calculate interpolated concentrations
     new_concentrations = interpolator(target_x)
     return target_x, new_concentrations
-def create_grid(L, dx, T, dt):
+def create_grid(L, dx, T):
     # this creates spatial and temporal grids 
     
-    if L <= 0 or dx <= 0 or dt <= 0 or T < 0:
+    if L <= 0 or dx <= 0 or T < 0:
         raise ValueError('Parameters are invalid')
 
-    nx = int(L/dx) + 1  
-    nt = int(T/dt) + 1
-
+    nx = int(L/dx) + 1
     x = np.linspace(0, L, nx)
-    time_grid = np.linspace(0, T, nt)
+    return x, T
+    
+x, T = create_grid(L, dx, T)
 
-    return x, time_grid  
-
-def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0):
+def advect(theta_init, U, dx, dt, T, decay_k=0.0):
     # Solves the advection equation using the first-order upwind scheme.
     # Calculate the CFL number which represents how much information travels across a grid cell in one time step.
     CFL = U * dt / dx
@@ -48,10 +46,13 @@ def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0):
         print(f"*** WARNING: CFL condition (U*dt/dx <= 1) violated (CFL={CFL:.2f}). Changing dt from {dt:.2f}s to {dt_new:.2f}s ***")
         dt = dt_new
         CFL = max_CFL
+    else:
+        dt = dt
+
+    num_time_steps = int(T / dt) + 1
+    time_grid = np.linspace(0, T_total, num_time_steps)
     num_points = len(theta_init)
     theta_current = theta_init.copy()
-
-  
     theta_all = np.zeros((len(num_time_steps), num_points))
     theta_all[0, :] = theta_init
 
@@ -63,12 +64,15 @@ def advect(theta_init, U, dx, dt, num_time_steps, decay_k=0.0):
         theta_next[1:] = theta_current[1:] + d_theta
         
         # Boundary condition: Set Left side boundary to 0.
-        theta_next[0] = theta_init[0]
+        theta_next[0] = theta_current[0]
+        theta_next[-1] = theta_current[-1]
         
         theta_next = theta_next * np.exp(-decay_k * dt)
         
         # Progress to next step.
         theta_current = theta_next
         theta_all[n + 1, :] = theta_current
-
-    return theta_all
+        
+    
+    
+    return theta_all, time_grid
