@@ -20,7 +20,7 @@ def plot_initial(x, theta_init):
     plt.ylabel("Concentration (µg/m³)")
     plt.title("Initial condition")
     plt.grid(True)
-    plt.show(block=False) + plt.pause(1)
+    plt.show(block=False); plt.pause(1)
 
 def plot_snapshots(x, time_grid, C_hist):
     C_hist = np.array(C_hist)
@@ -37,7 +37,7 @@ def plot_snapshots(x, time_grid, C_hist):
     plt.title("C vs x at different times")
     plt.legend()
     plt.grid(True)
-    plt.show(block=False) + plt.pause(1)
+    plt.show(block=False); plt.pause(1)
 
 def plot_heatmap(x, time_grid, C_hist):
     x = np.array(x)
