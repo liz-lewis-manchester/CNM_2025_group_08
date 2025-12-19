@@ -53,5 +53,36 @@ the main equation is  ∂t/∂θ	=−U*(∂x/∂θ),
     
      changing of pollutant over the whole simulation period.
 ​	
-  # 
+  # main.py
+
+  1. Let user to input all parameters such that CSV file path,
+ 
+     river length, spatial resolution, temporal resolution,
+
+     velocity
+
+  2. the vaild atat type should be float
+
+  3. imoprt the function from the other two files and use them
+
+     to run the whole logic of the modeling.
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
