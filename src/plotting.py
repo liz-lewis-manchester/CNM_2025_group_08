@@ -30,7 +30,7 @@ def plot_snapshots(x, time_grid, theta_all):
     
 
 
-    idx_list = [0, nt // 2, Nt - 1]
+    idx_list = [0, Nt // 2, Nt - 1]
 
     plt.figure()
     for k in idx_list:
