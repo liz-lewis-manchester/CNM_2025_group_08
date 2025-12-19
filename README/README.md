@@ -8,7 +8,7 @@ the main equation is  ∂t/∂θ	=−U*(∂x/∂θ),
 
 # Folder Structure
 
-# 1.src
+# 1.what each part does
 
 # modle.py 
 
