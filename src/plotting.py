@@ -22,12 +22,15 @@ def plot_initial(x, theta_init):
     plt.grid(True)
     plt.show(block=False); plt.pause(1)
 
-def plot_snapshots(x, time_grid, C_hist):
-    C_hist = np.array(C_hist)
-    t = np.array(time_grid)
-    nt = len(t)
+def plot_snapshots(x, time_grid, theta_all):
+    C_hist = np.array(theta_all)
 
-    idx_list = [0, nt // 2, nt - 1]
+    Nt = C_hist.shape[0]
+    t = time_grid[:Nt]
+    
+
+
+    idx_list = [0, nt // 2, Nt - 1]
 
     plt.figure()
     for k in idx_list:
@@ -39,10 +42,10 @@ def plot_snapshots(x, time_grid, C_hist):
     plt.grid(True)
     plt.show(block=False); plt.pause(1)
 
-def plot_heatmap(x, time_grid, C_hist):
+def plot_heatmap(x, time_grid, theta_all):
     x = np.array(x)
     t = np.array(time_grid)
-    C_hist = np.array(C_hist)
+    C_hist = np.array(theta_all)
 
     plt.figure()
     plt.imshow(
