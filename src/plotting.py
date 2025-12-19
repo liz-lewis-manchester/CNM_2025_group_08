@@ -33,7 +33,7 @@ def plot_snapshots(x, num_time_steps, C_hist):
     for k in idx_list:
         plt.plot(x, C_hist[k, :], label=f"t = {t[k]} s")
     plt.xlabel("x (m)")
-    plt.ylabel("C")
+    plt.ylabel("C (µg/m³)")
     plt.title("C vs x at different times")
     plt.legend()
     plt.grid(True)
@@ -51,7 +51,7 @@ def plot_heatmap(x, t, C_hist):
         aspect="auto",
         extent=[x.min(), x.max(), t.min(), t.max()]
     )
-    plt.colorbar(label="C")
+    plt.colorbar(label="C (µg/m³)")
     plt.xlabel("x (m)")
     plt.ylabel("t (s)")
     plt.title("Space-time plot")
