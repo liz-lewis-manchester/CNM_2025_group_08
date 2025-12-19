@@ -37,7 +37,21 @@ the main equation is  ∂t/∂θ	=−U*(∂x/∂θ),
    
   # plotting.py
 
-  
+  1. plot_data: Compares the orginal CSV raw data with
+    
+     interpolated data
+
+  2. plot_initial: generate a initial pollution distribution
+    
+     inthe whole model
+
+  3. plot_snapshots: Shows concentration's changing at three time
+    
+     points (start, mid, end)
+
+  4. plot_heatmap: Generates a space-time heatmap, to show the
+    
+     changing of pollutant over the whole simulation period.
 ​	
- 
+  # 
 
