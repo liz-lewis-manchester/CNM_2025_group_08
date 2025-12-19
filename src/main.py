@@ -21,7 +21,7 @@ if __name__ == "__main__":
       raise SystemExit("type wrong")
 
   try:
-    x, T = create_grid(L, dx, T)  # use function to generate list x and t
+    x = create_grid(L, dx, T)  # use function to generate list x and t
 
      # 1. Reading Data
     dist, conc = read_boundary_conditions(csv_file)
